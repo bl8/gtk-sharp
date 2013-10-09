@@ -163,6 +163,9 @@ AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
 
+PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= 3.2, enable_local_cairo=no, enable_local_cairo=yes)
+AC_SUBST(MONO_CAIRO_LIBS)
+
 GTK_REQUIRED_VERSION=3.0.0
 GLIB_REQUIRED_VERSION=2.28.0
 
@@ -205,6 +208,7 @@ else
 fi
 AC_SUBST(MDOC)
 
+AM_CONDITIONAL(ENABLE_LOCAL_CAIRO, test "x$enable_local_cairo" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 
@@ -265,7 +269,7 @@ if test x$platform_win32 = xyes; then
    sed -e "s/\/cyg\//\/\//" libtool > libtool.new; mv libtool.new libtool; chmod 755 libtool
 fi
 
-if test "x$enable_mono_cairo" = "xyes"; then
+if test "x$enable_local_cairo" = "xyes"; then
   cairo_comment="building local copy"
 else
   cairo_comment="using system assembly"
@@ -280,6 +284,7 @@ echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
 echo "      * gtk-dotnet.dll: $enable_dotnet"
+echo "      * Mono.Cairo.dll: $cairo_comment"
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"

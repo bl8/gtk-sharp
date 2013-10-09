@@ -1,5 +1,11 @@
 SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
 
+if ENABLE_LOCAL_CAIRO
+local_mono_cairo=$(top_builddir)/cairo/cairo-sharp.dll
+else
+local_mono_cairo=
+endif
+
 if ENABLE_DOTNET
 DOTNET_TARGETS=drawing-sample.exe
 DOTNET_ASSEMBLY=../gtkdotnet/gtk-dotnet.dll
@@ -15,7 +21,7 @@ DEBUGS = $(addsuffix .mdb, $(TARGETS))
 assemblies = 					\
 	$(top_builddir)/glib/glib-sharp.dll 	\
 	$(top_builddir)/gio/gio-sharp.dll 	\
-	$(top_builddir)/cairo/cairo-sharp.dll 	\
+	$(local_mono_cairo)			\
 	$(top_builddir)/pango/pango-sharp.dll 	\
 	$(top_builddir)/atk/atk-sharp.dll 	\
 	$(top_builddir)/gdk/gdk-sharp.dll 	\

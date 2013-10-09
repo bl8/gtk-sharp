@@ -1,3 +1,9 @@
+if ENABLE_LOCAL_CAIRO
+local_mono_cairo=$(top_builddir)/cairo/cairo-sharp.dll
+else
+local_mono_cairo=
+endif
+
 if ENABLE_DOTNET
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 pkgconfigdir=$(libdir)/pkgconfig
@@ -17,7 +23,7 @@ DISTCLEANFILES = $(ASSEMBLY).config
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
 POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
-references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(top_builddir)/cairo/cairo-sharp.dll $(top_builddir)/pango/pango-sharp.dll $(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
+references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(local_mono_cairo) $(top_builddir)/pango/pango-sharp.dll $(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
 build_references = $(addprefix -r:, $(references)) -r:System.Drawing.dll
 
 sources =		 			\
